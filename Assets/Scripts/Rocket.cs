@@ -8,6 +8,9 @@ public class Rocket : MonoBehaviour
     Rigidbody rigidBody;
     AudioSource audioSource;
 
+    // game settings
+    [SerializeField] float mainThrust = 2000f;
+    [SerializeField] float lateralThrust = 200f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,9 +28,10 @@ public class Rocket : MonoBehaviour
 
     private void Thrust()
     {
-        if (Input.GetKey(KeyCode.Space))        // separated IF cause can thrust and rotate at the same time
+        if (Input.GetKey(KeyCode.Space))
         {
-            rigidBody.AddRelativeForce(Vector3.up);
+            float thrustThisFrame = mainThrust * Time.deltaTime;
+            rigidBody.AddRelativeForce(Vector3.up * thrustThisFrame);
 
             if (!audioSource.isPlaying)
             {
@@ -44,13 +48,15 @@ public class Rocket : MonoBehaviour
     {
         rigidBody.freezeRotation = true;        // take manual control of rotation
 
+        float rotationThisFrame = lateralThrust * Time.deltaTime;
+
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.forward);
+            transform.Rotate(Vector3.forward * rotationThisFrame);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(-Vector3.forward);
+            transform.Rotate(-Vector3.forward * rotationThisFrame);
         }
 
         rigidBody.freezeRotation = false;       // resume rotation by physics
