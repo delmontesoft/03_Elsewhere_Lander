@@ -31,15 +31,19 @@ public class Rocket : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Friendly":
-                print("OK");    //TODO remove
+                print("OK");    //TODO remove (do nothing)
                 break;
 
             case "Fuel":
                 //TODO implement some fuel or energy gain mechanic
                 break;
 
+            case "Finish":
+                //TODO do something on win
+                break;
+
             default:
-                print("You're dead!");      //TODO implement some sort of life or energy drain mechanic
+                print("You're dead!");   //TODO implement some sort of life or energy drain mechanic (and remove message!)   
                 break;
         }
     }
