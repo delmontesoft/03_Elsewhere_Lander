@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿//using System;
+//using System.Collections;
+//using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Rocket : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Friendly":
-                print("OK");    //TODO remove (do nothing)
+                // nothing happens
                 break;
 
             case "Fuel":
@@ -39,11 +40,13 @@ public class Rocket : MonoBehaviour
                 break;
 
             case "Finish":
-                //TODO do something on win
+                print("WIN!");    //TODO do something on win
+                SceneManager.LoadScene(1);
                 break;
 
             default:
                 print("You're dead!");   //TODO implement some sort of life or energy drain mechanic (and remove message!)   
+                SceneManager.LoadScene(0);
                 break;
         }
     }
