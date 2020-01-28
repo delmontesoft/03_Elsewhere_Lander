@@ -16,9 +16,14 @@ public class Rocket : MonoBehaviour
     // game design settings
     [SerializeField] float mainThrust = 2000f;
     [SerializeField] float lateralThrust = 200f;
+
     [SerializeField] AudioClip mainEngine;              // To set the audio file at design time and play it with PlayOneShot
     [SerializeField] AudioClip lose;
     [SerializeField] AudioClip win;
+
+    [SerializeField] ParticleSystem mainEngineParticles;
+    [SerializeField] ParticleSystem loseParticles;
+    [SerializeField] ParticleSystem winParticles;
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +72,7 @@ public class Rocket : MonoBehaviour
         state = State.Transcending;
         audioSource.Stop();
         audioSource.PlayOneShot(win);
+        winParticles.Play();
         Invoke("LoadNextLevel", 1f);    //TODO parameterize load time (1f)
     }
 
@@ -75,6 +81,7 @@ public class Rocket : MonoBehaviour
         state = State.Dying;
         audioSource.Stop();
         audioSource.PlayOneShot(lose);
+        loseParticles.Play();
         Invoke("LoadFirstLevel", 1f);   //TODO parameterize load time (1f)
     }
 
@@ -87,6 +94,7 @@ public class Rocket : MonoBehaviour
         else
         {
             audioSource.Stop();
+            mainEngineParticles.Stop();
         }
     }
 
@@ -99,6 +107,8 @@ public class Rocket : MonoBehaviour
             //audioSource.Play();
             audioSource.PlayOneShot(mainEngine);
         }
+
+        mainEngineParticles.Play();
     }
 
     private void RespondToRotateInput()
