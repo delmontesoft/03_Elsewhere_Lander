@@ -16,6 +16,7 @@ public class Rocket : MonoBehaviour
     // game design settings
     [SerializeField] float mainThrust = 2000f;
     [SerializeField] float lateralThrust = 200f;
+    [SerializeField] float levelLoadDelay = 2f;
 
     [SerializeField] AudioClip mainEngine;              // To set the audio file at design time and play it with PlayOneShot
     [SerializeField] AudioClip lose;
@@ -73,7 +74,7 @@ public class Rocket : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(win);
         winParticles.Play();
-        Invoke("LoadNextLevel", 1f);    //TODO parameterize load time (1f)
+        Invoke("LoadNextLevel", levelLoadDelay);
     }
 
     private void StartDeathSequence()
@@ -81,8 +82,9 @@ public class Rocket : MonoBehaviour
         state = State.Dying;
         audioSource.Stop();
         audioSource.PlayOneShot(lose);
+        mainEngineParticles.Stop();
         loseParticles.Play();
-        Invoke("LoadFirstLevel", 1f);   //TODO parameterize load time (1f)
+        Invoke("LoadFirstLevel", levelLoadDelay);
     }
 
     private void RespondToThrustInput()

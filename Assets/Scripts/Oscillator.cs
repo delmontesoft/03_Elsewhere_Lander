@@ -7,8 +7,8 @@ public class Oscillator : MonoBehaviour
 {
     // Oscillator settings
     [SerializeField] Vector3 movementVector = new Vector3(10f, 10f, 10f);   // amount of movement in units per axis
-    [SerializeField] float movementTime = 2f;           // period in seconds (period from sin function)
-    float movementFactor;       // add [Range(0,1)] to variable to force between 0 and 1 (percentage)
+    [SerializeField] float movementTime = 2f;   // period in seconds (period from sin function)
+    float movementFactor;   // add [Range(0,1)] to variable to force between 0 and 1 (percentage)
 
     Vector3 startingPosition;
 
@@ -21,7 +21,9 @@ public class Oscillator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO protect agains movementTime = 0 => you can't divide by 0!!
+        // protect agains movementTime = 0 (Mathf.Epsilon is the smallest float number)
+        if  (movementTime <= Mathf.Epsilon) { return;  }
+
         float cycles = Time.time / movementTime;       // Time.time is framerate independant, so no need to do Time.deltaTime
         const float tau = Mathf.PI * 2;     //tau is about 6.28
         float rawSinWave = Mathf.Sin(cycles * tau);     // goes from -1 to +1
