@@ -1,6 +1,7 @@
 ﻿//using System;
 //using System.Collections;
 //using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +11,10 @@ public class Rocket : MonoBehaviour
     AudioSource audioSource;
 
     // game states
-    enum State { Alive, Dying, Transcending };
+    enum State { Alive, Dying, Transcending};
     State state = State.Alive;
+
+    bool isPlayerImmortal = false;
 
     // game design settings
     [SerializeField] float mainThrust = 2000f;
@@ -41,6 +44,12 @@ public class Rocket : MonoBehaviour
             RespondToThrustInput();
             RespondToRotateInput();
         }
+
+        if (Debug.isDebugBuild)     // only when dev(debug) build
+        {
+            RespondToDebugKeys();
+        }
+        
     }
 
     void OnCollisionEnter(Collision collision)
@@ -58,12 +67,16 @@ public class Rocket : MonoBehaviour
                 break;
 
             case "Finish":
+                print("here");
                 StartSuccessSequence();
                 break;
 
             default:
                 //TODO implement some sort of life or energy drain mechanic
-                StartDeathSequence();
+                if (!isPlayerImmortal)
+                {
+                    StartDeathSequence();
+                }
                 break;
         }
     }
@@ -139,5 +152,19 @@ public class Rocket : MonoBehaviour
     {
         // always loads firs scene when dead
         SceneManager.LoadScene(0);
+    }
+
+    private void RespondToDebugKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            //StartSuccessSequence();
+            LoadNextLevel();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            isPlayerImmortal = !isPlayerImmortal;
+        }
     }
 }
